@@ -3,7 +3,7 @@ const fs = require('fs');
 const simpleGit = require('simple-git');
 const { OpenAI } = require('openai');
 
-// কনফিগারেশন
+// Configure Git and OpenAI clients
 const git = simpleGit();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const AGENT_NAME = "Aura";
