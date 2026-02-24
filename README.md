@@ -50,4 +50,4 @@ Project-Aura/
 - Phase 3: Transition to GitHub Actions for cloud-based scheduling (Pending)
 - Phase 4: Develop a monitoring dashboard for activity visualization (Planned)
 
-Developed by Priom Das
+Developed by - Priom Das

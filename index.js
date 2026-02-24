@@ -15,7 +15,7 @@ async function runAuraDay2() {
         // 1. Generate an AI-powered log message using OpenAI's API
         /*const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: "Write a short, professional one-line log for a developer who just integrated AI and GitHub automation. Keep it under 15 words." }],
+            messages: [{ role: "user", content: "Write a short, professional one-line log for a developer who just integrated AI and GitHub automation. Keep it under 15 words." }]
     });
 
 const aiLog = response.choices[0].message.content; */
