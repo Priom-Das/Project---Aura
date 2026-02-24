@@ -12,7 +12,7 @@
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.3.1",
-    "openai": "^6.22.0",
+    "openai": "^6.24.0",
     "playwright": "^1.58.2",
     "simple-git": "^3.32.2"
   }
