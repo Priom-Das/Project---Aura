@@ -3,54 +3,47 @@ const fs = require('fs');
 const simpleGit = require('simple-git');
 const { OpenAI } = require('openai');
 
+// Configure Git and OpenAI clients
 const git = simpleGit();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const AGENT_NAME = "Aura";
 
 async function runAuraDay2() {
-    console.log(`--- ${AGENT_NAME} Status: Initializing Analysis ---`);
+    console.log(`--- ${AGENT_NAME} is analyzing today's progress ---`);
 
     try {
-        // 1. Log Generation Logic
-        // Using static message due to OpenAI quota constraints
-        const aiLog = "AI integration complete. GitHub automation synchronized.";
+        // 1. Generate an AI-powered log message using OpenAI's API
+        /*const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: "Write a short, professional one-line log for a developer who just integrated AI and GitHub automation. Keep it under 15 words." }],
+    });
+
+const aiLog = response.choices[0].message.content; */
+        const aiLog = "AI integration in progress (Quota limit hit, but automation works!)";
         const timestamp = new Date().toLocaleString();
-        const fullLog = `\n[${timestamp}] ${AGENT_NAME} Report: ${aiLog}`;
+        const fullLog = `\n[${timestamp}] AI Insight: ${aiLog}`;
 
-        // 2. File System Update
+        // 2. Update the log file with the AI-generated message
         fs.appendFileSync('progress_log.txt', fullLog);
-        console.log("Status: progress_log.txt updated successfully.");
+        console.log(`AI-Generated Log added to file.`);
 
-        // 3. GitHub Automation Configuration
-        const GITHUB_USER = "Priom-Das";
-        const REPO_NAME = "Project---Aura"; // Ensuring exact repository name matches your URL
-        const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+        // 3. Github Automation(Commit & Push)
+        console.log(`Aura is pushing updates directly to GitHub...`);
 
-        // Constructing Authentication URL
-        const remote = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${REPO_NAME}.git`;
+        // YOUR GITHUB REPO URL (Make sure to replace 'user_name' and 'Project-Aura' with your actual GitHub username and repository name)
+        const remote = `https://${process.env.GITHUB_TOKEN}@github.com/Priom-Das/Project-Aura.git`;
 
-        console.log(`Status: Synchronizing with remote repository...`);
-
-        // Re-configuring remote to prevent Authentication Errors
-        const remotes = await git.getRemotes(false);
-        if (remotes.some(r => r.name === 'origin')) {
-            await git.remote(['set-url', 'origin', remote]);
-        } else {
-            await git.addRemote('origin', remote);
-        }
-
-        // 4. Git Operations: Add, Commit, and Push
         await git.add('.');
-        await git.commit(`Automated Update: Day 2 ${AGENT_NAME} implementation.`);
+        await git.commit(`Day 2: ${AGENT_NAME} integrated AI and Auto-Push.`);
 
-        // Force pushing to main branch to ensure synchronization
-        await git.push('origin', 'main', { '--force': null });
+        // DIRECTLY PUSHING TO GITHUB WITHOUT ASKING FOR CREDENTIALS
+        await git.push('origin', 'main');
 
-        console.log(`Status: Remote synchronization successful.`);
-        console.log(`--- Mission Accomplished ---`);
+        console.log(`Success! Check your GitHub repository online.`);
+        console.log(`--- Day 2 Mission Complete ---`);
 
     } catch (error) {
-        console.error("Execution Error:", error.message);
+        console.error("Critical Error:", error.message);
     }
 }
 
