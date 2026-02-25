@@ -1,8 +1,6 @@
-/**
+/*
  * Project Aura - Autonomous AI Agent
- * Professional Deployment Module
- * * This script automates the process of generating AI-driven insights using 
- * Hugging Face and synchronizing them with a GitHub repository.
+ * This script automates the process of generating AI - driven insights using Hugging Face and synchronizing them with a GitHub repository.
  */
 
 // Load environment variables from a .env file into process.env
@@ -101,9 +99,9 @@ async function runAuraAutonomous() {
 
             // Direct push to the designated 'main' branch
             await git.push('origin', 'main');
-            console.log("[SUCCESS] Repository synchronization complete. Deployment finalized. ✅");
+            console.log("[SUCCESS] Repository synchronization complete. Deployment finalized.");
         } else {
-            console.log("[IDLE] Workspace clean. No synchronization required. 🛑");
+            console.log("[IDLE] Workspace clean. No synchronization required.");
         }
 
     } catch (error) {
