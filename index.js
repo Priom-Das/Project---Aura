@@ -48,7 +48,20 @@ async function runAuraAutonomous() {
         const aiLog = aiResponse.choices[0].message.content.trim();
         const timestamp = new Date().toLocaleString();
         const logEntry = `\n[${timestamp}] ${AGENT_NAME} Insight: ${aiLog}`;
-
+        /**
+         * SECTION: TIMESTAMP GENERATION
+         * Standardizing to Bangladesh Standard Time (BST)
+         */
+        const timestamp = new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Dhaka",
+            hour12: true,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
         /**
          * SECTION 2: DATA PERSISTENCE
          * Appending the formatted log entry into the local log file.
