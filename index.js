@@ -43,27 +43,36 @@ async function runAuraDay3() {
         // Secure URL for Cloud/Local Authentication
         const remoteUrl = `https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${REPO_NAME}.git`;
 
+        // Reset and Add Remote
         const remotes = await git.getRemotes();
         if (remotes.find(r => r.name === 'origin')) {
             await git.removeRemote('origin');
         }
         await git.addRemote('origin', remoteUrl);
 
-        // 4. Git Operations
+        // Set Git Config (for CI environments)
+        await git.addConfig('user.name', 'GitHub Action');
+        await git.addConfig('user.email', 'action@github.com');
+        // -----------------------------------------------------------
+
+        // 4. Git Operations: Stage, Commit, and Push
         await git.add('.');
 
         try {
-            await git.commit(`Automated Cloud Update: ${AGENT_NAME} Day 3 Execution.`);
-            console.log("Status: Committing changes...");
+            const status = await git.status();
+            if (status.staged.length > 0) {
+                await git.commit(`Automated Cloud Update: ${AGENT_NAME} Day 3 Execution.`);
+                console.log("Status: Committing changes...");
+
+                // Push to GitHub (explicit branch name)
+                await git.push('origin', 'main');
+                console.log("Status: Remote synchronization successful.");
+            } else {
+                console.log("Status: No new changes to commit.");
+            }
         } catch (e) {
-            console.log("Status: No changes to commit.");
+            console.error("Git Error:", e.message);
         }
-
-        await git.push('origin', 'main', { '--force': null });
-
-        console.log("Status: Remote synchronization successful.");
-        console.log(`--- ${AGENT_NAME} Mission Complete ---`);
-
     } catch (error) {
         console.error("Execution Error:", error.message);
     }
