@@ -1,32 +1,47 @@
+# The name of the automation process as it appears in the GitHub Actions tab
 name: Aura Autonomous Execution
 
+# Define when the script should run automatically
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs every day at midnight UTC
+    # Runs at 00:00 UTC (midnight) every single day using Cron syntax
+    - cron: '0 0 * * *'
   push:
+    # Trigger the script immediately whenever you push code to the main branch
     branches:
-      - main # When there is a push to the main branch
+      - main
 
 jobs:
   build:
+    # Use the latest Ubuntu Linux environment provided by GitHub
     runs-on: ubuntu-latest
-
+    
+    # Grant permission to the script to modify and push files back to the repository
+    permissions:
+      contents: write
+      
     steps:
+      # Step 1: Download the repository code onto the virtual machine
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      # Step 2: Install Node.js environment on the virtual machine
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # Step 3: Install all project dependencies defined in package.json
       - name: Install Dependencies
         run: npm install
 
+      # Step 4: Run the main script while passing secret keys as environment variables
       - name: Execute Aura Agent
         env:
+          # Hugging Face API key for AI generation
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }} # your GitHub token for pushing changes back to the repository
+          # Personal Access Token with 'workflow' scope for pushing changes
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: node index.js
