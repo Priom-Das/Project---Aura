@@ -44,13 +44,12 @@ async function runAuraAutonomous() {
             temperature: 0.5
         });
 
-        // Extracting and formatting content with local system timestamp
+        // Extracting AI content and formatting with Bangladesh Standard Time (BST)
         const aiLog = aiResponse.choices[0].message.content.trim();
-        const timestamp = new Date().toLocaleString();
-        const logEntry = `\n[${timestamp}] ${AGENT_NAME} Insight: ${aiLog}`;
+
         /**
          * SECTION: TIMESTAMP GENERATION
-         * Standardizing to Bangladesh Standard Time (BST)
+         * Ensures the log recorded by the Cloud Agent matches your local time (BST).
          */
         const timestamp = new Date().toLocaleString("en-US", {
             timeZone: "Asia/Dhaka",
@@ -62,6 +61,9 @@ async function runAuraAutonomous() {
             minute: '2-digit',
             second: '2-digit'
         });
+
+        // Final log entry string
+        const logEntry = `\n[${timestamp}] ${AGENT_NAME} Insight: ${aiLog}`;
         /**
          * SECTION 2: DATA PERSISTENCE
          * Appending the formatted log entry into the local log file.
